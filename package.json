@@ -1,0 +1,26 @@
+{
+  "name": "teamwork-devctrainingwithandela-capstone-project-core-track",
+  "version": "1.0.0",
+  "description": "Teamwork is an internal social network for employees of an organization. The goal of this",
+  "main": "index.js",
+  "scripts": {
+    "serve:backend": "node ./backend/bin/www",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OwenKelvin/Teamwork-DevCTrainingWithAndela-Capstone-Project-Core-Track.git"
+  },
+  "keywords": [
+    "DevTrainingWithAndela",
+    "Facebook",
+    "Teamwork",
+    "backend"
+  ],
+  "author": "Owen Kelvin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OwenKelvin/Teamwork-DevCTrainingWithAndela-Capstone-Project-Core-Track/issues"
+  },
+  "homepage": "https://github.com/OwenKelvin/Teamwork-DevCTrainingWithAndela-Capstone-Project-Core-Track#readme"
+}
