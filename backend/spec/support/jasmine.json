@@ -1,7 +1,9 @@
 {
-  "spec_dir": "spec",
+  "spec_dir": "./../backend",
   "spec_files": [
-    "**/*[sS]pec.js"
+    "routes/**/*[sS]pec.js",
+    "public/**/*[sS]pec.js",
+    "services/**/*[sS]pec.js"
   ],
   "helpers": [
     "helpers/**/*.js"
