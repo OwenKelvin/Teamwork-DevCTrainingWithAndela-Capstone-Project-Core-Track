@@ -9,16 +9,18 @@ const authService = {
     const timestamp = new Date().getTime();
     return jwt.encode({ sub: user.id, iat: timestamp }, passportSecret);
   },
-  login(req, res, done) {
+  login ( req, res, done ) {
+    
     const { email, password } = req.body;
     const text = `SELECT * FROM users where email=$1`;
     pool.connect(function(err, client, done) {
       if (err) {
-        return console.error('connexion error', err);
+        return console.error('connection error', err);
       }
       client
         .query(text, [email])
-        .then(response => {
+        .then( response => {
+        
           if (response.rows.length > 0) {
             const user = response.rows[0];
             const token = authService.tokenForUSer(user);
@@ -47,7 +49,7 @@ const authService = {
           done();
         })
         .finally(() => {
-          //client.end();
+          // pool.end();
         });
     });
 

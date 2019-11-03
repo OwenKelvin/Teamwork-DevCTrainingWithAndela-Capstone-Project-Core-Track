@@ -3,11 +3,13 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "prestart": ".\\bin\\db.bat",
     "start": "node ./bin/www",
     "test": "jasmine",
     "migrate": "node-pg-migrate"
   },
   "dependencies": {
+    "axios": "^0.19.0",
     "bcrypt": "^3.0.6",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
