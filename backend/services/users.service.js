@@ -1,4 +1,5 @@
-const bcrypt = require('bcrypt');
+const authService = require('./auth.service')
+const bcrypt = require( 'bcrypt' );
 const pg = require('pg');
 const saltRounds = 12;
 const pool = require('../config/db');

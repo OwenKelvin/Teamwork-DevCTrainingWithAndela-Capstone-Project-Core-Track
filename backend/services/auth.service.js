@@ -2,7 +2,7 @@
 const pool = require('../config/db');
 const jwt = require('jwt-simple');
 const bcrpt = require('bcrypt');
-const passportSecret = require('../config/env.config');
+const { passportSecret } = require('../config/env.config');
 
 const authService = {
   tokenForUSer(user) {
