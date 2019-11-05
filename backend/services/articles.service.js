@@ -18,15 +18,16 @@ const ArticleService = {
       .then(response => {
         const message = 'Article successfully posted';
         const articleId = response.id;
-        res.status(201).send({
+        return res.status(201).send({
           status: 'success',
           data: { articleId, message, ...response }
         });
-        done();
       })
       .catch(err => {
         const message = err;
         return res.status(500).send({ status: false, data: { message } });
+      })
+      .finally(() => {
         done();
       });
   },
@@ -44,6 +45,23 @@ const ArticleService = {
       .catch(err => {
         const message = err;
         return res.status(500).send({ status: false, data: { message } });
+        done();
+      });
+  },
+  delete(req, res, done) {
+    ArticleService.deleteArticle(req.params.id)
+      .then(() => {
+        const message = 'Article successfully deleted';
+        return res.status(202).send({
+          status: 'success',
+          data: { message }
+        });
+      })
+      .catch(err => {
+        const message = err;
+        return res.status(500).send({ status: false, data: { message } });
+      })
+      .finally(() => {
         done();
       });
   },
@@ -66,10 +84,10 @@ const ArticleService = {
             }
           })
           .catch(err => {
-            done();
+            reject(err);
           })
           .finally(() => {
-            // pool.end();
+            done();
           });
       });
     });
@@ -97,6 +115,28 @@ const ArticleService = {
           })
           .finally(() => {
             // pool.end();
+          });
+      });
+    });
+  },
+  async deleteArticle(id) {
+    return new Promise((resolve, reject) => {
+      resolve('amen');
+      const text = `DELETE FROM articles WHERE id=$1`;
+      pool.connect(function(err, client, done) {
+        if (err) {
+          reject();
+        }
+        client
+          .query(text, [id])
+          .then(response => {
+            resolve();
+          })
+          .catch(err => {
+            reject(err);
+          })
+          .finally(() => {
+            done();
           });
       });
     });
