@@ -1,5 +1,5 @@
 // const client = require('../config/db');
-const pool = require('../config/db');
+const { pool } = require('../config/db');
 const jwt = require('jwt-simple');
 const bcrpt = require('bcrypt');
 const { passportSecret } = require('../config/env.config');

@@ -31,4 +31,4 @@ const config = {
 const pool = new pg.Pool( config );
 
 
-module.exports = pool;
+module.exports = { config, pool };

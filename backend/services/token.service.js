@@ -2,7 +2,7 @@ let jwt = require('jwt-simple');
 const { passportSecret } = require('../config/env.config');
 
 let checkAdminToken = (req, res, next) => {
-  if (req.url === '/auth/signin') {
+  if (req.url === '/api/v1/auth/signin') {
     return next();
   }
   let token =
@@ -18,7 +18,6 @@ let checkAdminToken = (req, res, next) => {
       //     return res.end('token expired', 401);
       //   }
       next();
-      return;
     } catch (err) {
       res.status(401);
       return res.send('Authorization token provided is invalid');

@@ -1,2 +1,3 @@
 const passportSecret = '24rdfyi8$&i!';
-module.exports = { passportSecret };
+const apiBase = 'http://localhost:3000/api/v1';
+module.exports = { passportSecret, apiBase };

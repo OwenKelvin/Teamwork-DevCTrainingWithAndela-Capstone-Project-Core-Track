@@ -1,4 +1,5 @@
-const axios = require('axios');
+const { apiBase } = require('../config/env.config');
+const axios = require( 'axios' );
 const userService = require('../services/users.service');
 let adminEmail = 'admin' + Date.now() + '@gmail.com';
 let password = 'password';
@@ -34,7 +35,7 @@ describe('Server', () => {
 
     beforeEach(done => {
       axios
-        .post('http://localhost:3000/auth/signin', postData)
+        .post(`${apiBase}/auth/signin`, postData)
         .then(response => {
           data.body = response.data;
           data.status = response.status;
@@ -65,13 +66,12 @@ describe('Server', () => {
     };
     beforeEach(done => {
       axios
-        .post('http://localhost:3000/auth/signin', postData)
+        .post(`${apiBase}/auth/signin`, postData)
         .then(response => {
           adminToken = response.data.data.token;
           done();
         })
-        .catch( err => {
-          
+        .catch(err => {
           // console.log(err);
         });
     });
@@ -90,14 +90,14 @@ describe('Server', () => {
           password: password
         };
         axios
-          .post('http://localhost:3000/auth/create-user', postData, config)
+          .post(`${apiBase}/auth/create-user`, postData, config)
           .then(response => {
             data.body = response.data;
             data.status = response.status;
             done();
           })
           .catch(e => {
-            console.log(e);
+            console.log('An Error Occured Logging in user');
           });
       });
       it('should have a status code of 201', () => {
@@ -122,7 +122,7 @@ describe('Server', () => {
           password: password
         };
         axios
-          .post('http://localhost:3000/auth/create-user', postData)
+          .post(`${apiBase}/auth/create-user`, postData)
           .then(response => {
             data.body = response.data;
             data.status = response.status;
