@@ -11,5 +11,6 @@ router.post( '/auth/create-user', userService.createNewEmpolyee );
 // Articles Routes
 router.post('/articles', articlesService.store);
 router.get('/articles', articlesService.index);
+router.patch('/articles/:id', articlesService.update);
 
 module.exports = router;

@@ -30,6 +30,23 @@ const ArticleService = {
         done();
       });
   },
+  update(req, res, done) {
+    ArticleService.updateArticle(req.params.id, req.body)
+      .then(response => {
+        const message = 'Article successfully updated';
+        const articleId = response.id;
+        res.status(202).send({
+          status: 'success',
+          data: { articleId, message, ...response }
+        });
+        done();
+      })
+      .catch(err => {
+        const message = err;
+        return res.status(500).send({ status: false, data: { message } });
+        done();
+      });
+  },
   async createArticle(data) {
     const { title, article } = data;
     const values = [title, article];
@@ -43,7 +60,34 @@ const ArticleService = {
           .query(text, values)
           .then(response => {
             if (response.rows.length > 0) {
-              resolve(response.rows);
+              resolve(response.rows[0]);
+            } else {
+              reject();
+            }
+          })
+          .catch(err => {
+            done();
+          })
+          .finally(() => {
+            // pool.end();
+          });
+      });
+    });
+  },
+  async updateArticle(id, data) {
+    const { title, article } = data;
+    const values = [title, article, id];
+    return new Promise((resolve, reject) => {
+      const text = `UPDATE articles SET title=$1, article=$2 WHERE id=$3 RETURNING *`;
+      pool.connect(function(err, client, done) {
+        if (err) {
+          reject();
+        }
+        client
+          .query(text, values)
+          .then(response => {
+            if (response.rows.length > 0) {
+              resolve(response.rows[0]);
             } else {
               reject();
             }
