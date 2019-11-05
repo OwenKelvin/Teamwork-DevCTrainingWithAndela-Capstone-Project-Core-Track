@@ -10,5 +10,6 @@ router.post( '/auth/create-user', userService.createNewEmpolyee );
 
 // Articles Routes
 router.post('/articles', articlesService.store);
+router.get('/articles', articlesService.index);
 
 module.exports = router;

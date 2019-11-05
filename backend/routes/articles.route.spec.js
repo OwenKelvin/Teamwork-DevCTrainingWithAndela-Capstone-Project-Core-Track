@@ -1,5 +1,5 @@
 const { apiBase } = require('../config/env.config');
-const axios = require( 'axios' );
+const axios = require('axios');
 let userEmail = 'employee' + Date.now() + '@gmail.com';
 const userService = require('./../services/users.service');
 const password = 'password';
@@ -27,16 +27,16 @@ describe('POST /articles', () => {
             console.log(' => An error occured logging in user');
           });
       })
-        .catch( e => {
-           console.log(' => An error occured Creating a user');
+      .catch(e => {
+        console.log(' => An error occured Creating a user');
       });
   });
   describe('with all parameters', () => {
     let data = { data: {} };
-    const config = {
-      headers: { Authorization: 'bearer ' + token }
-    };
     beforeEach(done => {
+      const config = {
+        headers: { Authorization: 'bearer ' + token }
+      };
       const articleData = {
         title: 'Some Article title',
         article: 'some article body'
@@ -65,7 +65,67 @@ describe('POST /articles', () => {
       expect(data.data.message).toBeDefined();
     });
     it('should return a body with a status "success"', () => {
+      expect(data.data.status).toBe('success');
+    });
+  });
+});
+describe('GET /articles', () => {
+  beforeEach(done => {
+    const userData = {
+      email: userEmail,
+      firstName: 'firstName',
+      lastName: 'lastName',
+      jobRole: 'admin',
+      password: password
+    };
+    userService
+      .createUser()
+      .then(() => {
+        axios
+          .post(`${apiBase}/auth/signin`, userData)
+          .then(response => {
+            token = response.data.data.token;
+            done();
+          })
+          .catch(e => {
+            console.log(' => An error occured logging in user');
+          });
+      })
+      .catch(e => {
+        console.log(' => An error occured Creating a user');
+      });
+  });
+  describe('By logged in user', () => {
+    let data = { data: {} };
+    beforeEach(done => {
+      const config = {
+        headers: { Authorization: 'bearer ' + token }
+      };
+      const articleData = {
+        title: 'Some Article title',
+        article: 'some article body'
+      };
+      axios
+        .post(`${apiBase}/articles`, articleData, config)
+        .then(response => {
+          data.statusCode = response.status;
+          data.data.status = response.data.status;
+          data.data = response.data.data;
+          done();
+        })
+        .catch(e => {
+          console.log('An error occured creating article');
+          done();
+        });
+    });
+    it('should return status 200', () => {
+      expect(data.statusCode).toBe(200);
+    });
+    it('should return a body with a status "success"', () => {
       expect(data.data.status).toBeDefined('success');
+    });
+    it('should return articles in the correct format', () => {
+      expect(data.data).toBeDefined();
     });
   });
 });

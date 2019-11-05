@@ -52,40 +52,6 @@ const authService = {
           // pool.end();
         });
     });
-
-    // client
-    //   .query(text, [email])
-    //   .then(response => {
-    //     if (response.rows.length > 0) {
-    //       const user = response.rows[0];
-    //       const token = authService.tokenForUSer(user);
-    //       const userId = user.id;
-    //       bcrpt.compare(password, user.password).then(validPassword => {
-    //         if (validPassword) {
-    //           res
-    //             .status(200)
-    //             .send({ status: 'success', data: { token, userId } });
-    //           done();
-    //         } else {
-    //           res.status(401).send({
-    //             status: 'fail',
-    //             message: 'invalid username or password'
-    //           });
-    //           done();
-    //         }
-    //       });
-    //     } else {
-    //       res.status( 401 ).send( { status: 'fail' } );
-    //       done();
-    //     }
-    //     const user = response.rows[0];
-    //   })
-    //   .catch(err => {
-    //     done();
-    //   })
-    //   .finally(() => {
-    //     client.end();
-    //   });
   }
 };
 module.exports = authService;
