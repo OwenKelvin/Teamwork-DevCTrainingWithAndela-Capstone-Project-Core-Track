@@ -12,6 +12,7 @@ router.post( '/auth/create-user', userService.createNewEmpolyee );
 router.post('/articles', articlesService.store);
 router.get('/articles', articlesService.index);
 router.patch('/articles/:id', articlesService.update);
-router.delete('/articles/:id', articlesService.delete);
+router.delete('/articles/:id', articlesService.destroy);
+router.get('/articles/:id', articlesService.show);
 
 module.exports = router;

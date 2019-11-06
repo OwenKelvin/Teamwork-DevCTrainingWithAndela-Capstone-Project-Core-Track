@@ -5,11 +5,29 @@ const ArticleService = {
     ArticleService.getAllArticles()
       .then(response => {
         res.status(200).send({ status: 'success', data: response });
-        done();
       })
       .catch(err => {
         const message = err;
         res.status(500).send({ status: false, data: { message } });
+      })
+      .finally(() => {
+        done();
+      });
+  },
+  show(req, res, done) {
+    ArticleService.getArticleById(req.params.id)
+      .then(response => {
+        const articleId = response.id;
+        return res.status(200).send({
+          status: 'success',
+          data: { articleId, ...response }
+        });
+      })
+      .catch(err => {
+        const message = err;
+        return res.status(500).send({ status: false, data: { message } });
+      })
+      .finally(() => {
         done();
       });
   },
@@ -36,19 +54,20 @@ const ArticleService = {
       .then(response => {
         const message = 'Article successfully updated';
         const articleId = response.id;
-        res.status(202).send({
+        return res.status(202).send({
           status: 'success',
           data: { articleId, message, ...response }
         });
-        done();
       })
       .catch(err => {
         const message = err;
         return res.status(500).send({ status: false, data: { message } });
+      })
+      .finally(() => {
         done();
       });
   },
-  delete(req, res, done) {
+  destroy(req, res, done) {
     ArticleService.deleteArticle(req.params.id)
       .then(() => {
         const message = 'Article successfully deleted';
@@ -153,6 +172,32 @@ const ArticleService = {
           .then(response => {
             if (response.rows.length > 0) {
               resolve(response.rows);
+            } else {
+              reject();
+            }
+          })
+          .catch(err => {
+            done();
+          })
+          .finally(() => {
+            // pool.end();
+          });
+      });
+    });
+  },
+  async getArticleById(id) {
+    const values = [id];
+    return new Promise((resolve, reject) => {
+      const queryString = `SELECT * FROM articles WHERE id=$1`;
+      pool.connect((err, client, done) => {
+        if (err) {
+          reject();
+        }
+        client
+          .query(queryString, values)
+          .then(response => {
+            if (response.rows.length > 0) {
+              resolve(response.rows[0]);
             } else {
               reject();
             }
