@@ -2,6 +2,7 @@ const express = require('express');
 const articlesService = require('../services/articles.service');
 const userService = require('../services/users.service');
 const authService = require('../services/auth.service');
+const articleComentService = require('../services/article-comment.service');
 const router = express.Router();
 
 // Auth Routes
@@ -13,6 +14,9 @@ router.post('/articles', articlesService.store);
 router.get('/articles', articlesService.index);
 router.patch('/articles/:id', articlesService.update);
 router.delete('/articles/:id', articlesService.destroy);
-router.get('/articles/:id', articlesService.show);
+router.get( '/articles/:id', articlesService.show );
+
+// Comments Routes
+router.post('/articles/:articleId/comment', articleComentService.store);
 
 module.exports = router;
