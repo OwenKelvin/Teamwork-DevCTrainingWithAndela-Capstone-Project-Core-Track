@@ -6,31 +6,6 @@ const password = 'password';
 let token =
   'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjM2NiwiaWF0IjoxNTcyNzkyMDQ5NzU5fQ.JNYZU2NeJIRTruT3Ln9AydtsvLmBTJHDczKmg7Ed4nc';
 describe('POST /articles', () => {
-  beforeEach(done => {
-    const userData = {
-      email: userEmail,
-      firstName: 'firstName',
-      lastName: 'lastName',
-      jobRole: 'admin',
-      password: password
-    };
-    userService
-      .createUser()
-      .then(() => {
-        axios
-          .post(`${apiBase}/auth/signin`, userData)
-          .then(response => {
-            token = response.data.data.token;
-            done();
-          })
-          .catch(e => {
-            console.log(' => An error occured logging in user');
-          });
-      })
-      .catch(e => {
-        console.log(' => An error occured Creating a user');
-      });
-  });
   describe('with all parameters', () => {
     let data = { data: {} };
     beforeEach(done => {
@@ -48,10 +23,11 @@ describe('POST /articles', () => {
           data.data.status = response.data.status;
           data.data.id = response.data.data.articleId;
           data.data.message = response.data.data.message;
-          done();
         })
         .catch(e => {
           console.log('An error occured creating article');
+        })
+        .finally(() => {
           done();
         });
     });
@@ -70,31 +46,6 @@ describe('POST /articles', () => {
   });
 });
 describe('GET /articles', () => {
-  beforeEach(done => {
-    const userData = {
-      email: userEmail,
-      firstName: 'firstName',
-      lastName: 'lastName',
-      jobRole: 'admin',
-      password: password
-    };
-    userService
-      .createUser()
-      .then(() => {
-        axios
-          .post(`${apiBase}/auth/signin`, userData)
-          .then(response => {
-            token = response.data.data.token;
-            done();
-          })
-          .catch(e => {
-            console.log(' => An error occured logging in user');
-          });
-      })
-      .catch(e => {
-        console.log(' => An error occured Creating a user');
-      });
-  });
   describe('By logged in user', () => {
     let data = { data: {} };
     beforeEach(done => {
@@ -106,7 +57,7 @@ describe('GET /articles', () => {
         article: 'some article body'
       };
       axios
-        .post(`${apiBase}/articles`, articleData, config)
+        .get(`${apiBase}/articles`, config)
         .then(response => {
           data.statusCode = response.status;
           data.data.status = response.data.status;
@@ -115,14 +66,13 @@ describe('GET /articles', () => {
         })
         .catch(e => {
           console.log('An error occured creating article');
+        })
+        .finally(() => {
           done();
         });
     });
     it('should return status 200', () => {
       expect(data.statusCode).toBe(200);
-    });
-    it('should return a body with a status "success"', () => {
-      expect(data.data.status).toBeDefined('success');
     });
     it('should return articles in the correct format', () => {
       expect(data.data).toBeDefined();
