@@ -5,7 +5,8 @@ const userService = require('./../services/users.service');
 const password = 'password';
 let token =
   'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjM2NiwiaWF0IjoxNTcyNzkyMDQ5NzU5fQ.JNYZU2NeJIRTruT3Ln9AydtsvLmBTJHDczKmg7Ed4nc';
-describe('POST /articles', () => {
+
+describe( 'POST /articles', () => {
   describe('with all parameters', () => {
     let data = { data: {} };
     beforeEach(done => {
@@ -45,6 +46,7 @@ describe('POST /articles', () => {
     });
   });
 });
+
 describe('GET /articles', () => {
   describe('By logged in user', () => {
     let data = { data: {} };
@@ -76,6 +78,88 @@ describe('GET /articles', () => {
     });
     it('should return articles in the correct format', () => {
       expect(data.data).toBeDefined();
+    });
+  });
+});
+
+describe('PATCH /articles/:articleId', () => {
+  describe('By logged in user', () => {
+    let data = { data: {} };
+    beforeEach(done => {
+      const config = {
+        headers: { Authorization: 'bearer ' + token }
+      };
+      const articleData = {
+        title: 'Some Article title',
+        article: 'some article body'
+      };
+      axios
+        .patch(`${apiBase}/articles/1`, articleData, config)
+        .then(response => {
+          data.statusCode = response.status;
+          done();
+        })
+        .catch(e => {
+          console.log('An error occured creating article');
+        })
+        .finally(() => {
+          done();
+        });
+    });
+    it('should return status 202', () => {
+      expect(data.statusCode).toBe(202);
+    });
+  });
+});
+
+describe('DELETE /articles/:articleId', () => {
+  describe('By logged in user', () => {
+    let data = { data: {} };
+    beforeEach(done => {
+      const config = {
+        headers: { Authorization: 'bearer ' + token }
+      };
+      axios
+        .delete(`${apiBase}/articles/15`, config)
+        .then(response => {
+          data.statusCode = response.status;
+          done();
+        })
+        .catch(e => {
+          console.log('An error occured creating article');
+        })
+        .finally(() => {
+          done();
+        });
+    });
+    it('should return status 202', () => {
+      expect(data.statusCode).toBe(202);
+    });
+  });
+} );
+
+describe('GET /articles/:articleId', () => {
+  describe('By logged in user', () => {
+    let data = { data: {} };
+    beforeEach(done => {
+      const config = {
+        headers: { Authorization: 'bearer ' + token }
+      };
+      axios
+        .get(`${apiBase}/articles/5`, config)
+        .then(response => {
+          data.statusCode = response.status;
+          done();
+        })
+        .catch(e => {
+          console.log('An error occured creating article');
+        })
+        .finally(() => {
+          done();
+        });
+    });
+    it('should return status 200', () => {
+      expect(data.statusCode).toBe(200);
     });
   });
 });
